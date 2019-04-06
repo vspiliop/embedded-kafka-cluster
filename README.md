@@ -28,12 +28,12 @@ mvn clean install
 
 ### Parameters
 
-| Parameter | Description | Example
-| --- | --- |
-| topics | List of topics to be created | topics = {"topic1.t", "topic2.t"} or topics = { "${my.application.property}" }
-| brokersCount | # of brokers of the cluster | brokersCount = 3
-| zookeepersCount | # of ZKs of the cluster | zookeepersCount = 3
-| schemaRegistriesCount | # of Confluent Schema Registries of the cluster | zookeepersCount = 3
+| Parameter | Description | Example |
+| --- | --- | --- |
+| topics | List of topics to be created | topics = {"topic1.t", "topic2.t"} or topics = { "${my.application.property}" } |
+| brokersCount | # of brokers of the cluster | brokersCount = 3 |
+| zookeepersCount | # of ZKs of the cluster | zookeepersCount = 3 |
+| schemaRegistriesCount | # of Confluent Schema Registries of the cluster | zookeepersCount = 3 |
 
 ### Usage Examples
 
