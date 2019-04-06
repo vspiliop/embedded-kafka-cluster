@@ -2,6 +2,20 @@
 
 Includes Kafka related testing utilities.
 
+## Build/ Install
+
+# Build and run tests
+
+```
+mvn clean package
+```
+
+# Run tests and install to local maven repo 
+
+```
+mvn clean install
+```
+
 ## @EmbeddedKafkaCluster
 
 <a href="https://www.testcontainers.org/">Testcontainers</a> based.
