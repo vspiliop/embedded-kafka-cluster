@@ -1,0 +1,5 @@
+logging:
+  level:
+    root: info
+    # trace level on the following package enables logging of the docker containers
+    com.etiology.testing.kafka.junit.rule: debug

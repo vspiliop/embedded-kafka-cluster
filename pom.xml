@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.etiology.testing</groupId>
+  <artifactId>kafka-testing-utilities</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <properties>
+    <java-version>10</java-version>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <maven-compiler-plugin-version>3.7.0</maven-compiler-plugin-version>
+    <maven-resources-plugin-version>3.1.0</maven-resources-plugin-version>
+    <maven-surefire-plugin-version>2.22.0</maven-surefire-plugin-version>
+    <cucumber-jvm-parallel-plugin.version>5.0.0</cucumber-jvm-parallel-plugin.version>
+    <build-helper-maven-plugin-version>3.0.0</build-helper-maven-plugin-version>
+
+    <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
+    <lombok-version>1.16.22</lombok-version>
+    <kafka-version>1.0.1</kafka-version>
+    <kafka-streams-version>1.0.1</kafka-streams-version>
+    <avro-version>1.8.2</avro-version>
+    <confluent-version>4.1.1</confluent-version>
+    <commons-io-version>2.6</commons-io-version>
+    <jackson-version>2.9.5</jackson-version>
+    <jodatime-version>2.9.9</jodatime-version>
+    <awaitility.version>3.1.1</awaitility.version>
+    <cucumber.version>2.4.0</cucumber.version>
+    <testcontainers.version>1.10.5</testcontainers.version>
+  </properties>
+
+  <!-- Defines if the tests will run parallel or serial -->
+  <profiles>
+  
+    <!-- Run X (i.e. 2, 3, or 4) number of tests in separate java jvm(s) -->
+    <profile>
+      <id>parallel_2_jvms</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <surefire.forkCount>2</surefire.forkCount>
+      </properties>
+    </profile>
+    
+    <profile>
+      <id>parallel_3_jvms</id>
+      <properties>
+        <surefire.forkCount>3</surefire.forkCount>
+      </properties>
+    </profile>
+    
+    <profile>
+      <id>parallel_4_jvms</id>
+      <properties>
+        <surefire.forkCount>4</surefire.forkCount>
+      </properties>
+    </profile>
+    
+    <profile>
+      <id>serial</id>
+      <properties>
+        <surefire.forkCount>1</surefire.forkCount>
+      </properties>
+    </profile>
+    
+  </profiles>
+
+  <dependencyManagement>
+
+    <dependencies>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.awaitility</groupId>
+        <artifactId>awaitility</artifactId>
+        <version>${awaitility.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.confluent</groupId>
+        <artifactId>kafka-streams-avro-serde</artifactId>
+        <version>${confluent-version}</version>
+      </dependency>
+
+  <dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-streams-examples</artifactId>
+    <version>1.0.2</version>
+  </dependency>
+
+      <dependency>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro</artifactId>
+        <version>${avro-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.kafka</groupId>
+        <artifactId>kafka-streams</artifactId>
+        <version>${kafka-streams-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>kafka</artifactId>
+        <version>${testcontainers.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-java</artifactId>
+        <version>${cucumber.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-spring</artifactId>
+        <version>${cucumber.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.cucumber</groupId>
+        <artifactId>cucumber-junit</artifactId>
+        <version>${cucumber.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+    </dependencies>
+
+  </dependencyManagement>
+
+  <!-- ============================================================= -->
+  <!-- Dependencies -->
+  <!-- ============================================================= -->
+
+  <dependencies>
+
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>kafka</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-streams</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.confluent</groupId>
+      <artifactId>kafka-streams-avro-serde</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-spring</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>confluent</id>
+      <url>http://packages.confluent.io/maven/</url>
+    </repository>
+  </repositories>
+
+  <build>
+
+    <pluginManagement>
+
+      <plugins>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin-version}</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin-version}</version>
+          <configuration>
+            <source>${java-version}</source>
+            <target>${java-version}</target>
+          </configuration>
+        </plugin>
+
+        <!-- Generate separated runner for each feature scenario, for parallel 
+          execution -->
+        <plugin>
+          <groupId>com.github.temyers</groupId>
+          <artifactId>cucumber-jvm-parallel-plugin</artifactId>
+          <version>${cucumber-jvm-parallel-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>generateRunners</id>
+              <phase>validate</phase>
+              <goals>
+                <goal>generateRunners</goal>
+              </goals>
+              <configuration>
+                <glue>com.etiology.testing.kafka.steps</glue>
+                <featuresDirectory>src/test/java/com/etiology/testing/kafka/feature</featuresDirectory>
+                <cucumberOutputDir>target/cucumber-parallel</cucumberOutputDir>
+                <outputDirectory>${project.build.directory}/generated-test-sources/cucumber</outputDirectory>
+                <packageName>com.etiology.testing.kafka.support</packageName>
+                <format>json,html</format>
+                <tags>
+                  <tag>~@wip</tag>
+                </tags>
+                <parallelScheme>SCENARIO</parallelScheme>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Enable parallelisation of junit tests -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin-version}</version>
+          <configuration>
+            <forkCount>${surefire.forkCount}</forkCount>
+            <reuseForks>false</reuseForks>
+            <!-- Execute automatically generated junit class -->
+            <includes>
+              <include>**/Parallel*IT.class</include>
+              <include>**/*Tests.class</include>
+              <include>**/*Test.class</include>
+            </includes>
+            <excludes>
+              <exclude>${test.excludes}</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.avro</groupId>
+          <artifactId>avro-maven-plugin</artifactId>
+          <version>${avro-version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${build-helper-maven-plugin-version}</version>
+        </plugin>
+
+        <!--This plugin's configuration is used to store Eclipse m2e settings 
+          only. It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>
+                      org.apache.avro
+                    </groupId>
+                    <artifactId>
+                      avro-maven-plugin
+                    </artifactId>
+                    <versionRange>
+                      [1.8.2,)
+                    </versionRange>
+                    <goals>
+                      <goal>schema</goal>
+                      <goal>protocol</goal>
+                      <goal>idl-protocol</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>
+                      com.github.temyers
+                    </groupId>
+                    <artifactId>
+                      cucumber-jvm-parallel-plugin
+                    </artifactId>
+                    <versionRange>
+                      [5.0.0,)
+                    </versionRange>
+                    <goals>
+                      <goal>generateRunners</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+
+      </plugins>
+
+    </pluginManagement>
+
+    <plugins>
+
+      <plugin>
+        <groupId>com.github.temyers</groupId>
+        <artifactId>cucumber-jvm-parallel-plugin</artifactId>
+      </plugin>
+
+      <!-- Enable parallelisation of junit tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+
+      <!-- Generate the avro model and include it only in the test resources -->
+      <plugin>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>schema</goal>
+              <goal>protocol</goal>
+              <goal>idl-protocol</goal>
+            </goals>
+            <configuration>
+              <sourceDirectory>${project.basedir}/src/test/resources/avro</sourceDirectory>
+              <stringType>String</stringType>
+              <fieldVisibility>PRIVATE</fieldVisibility>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Add the generated classes to the test sources of the maven project. 
+        This is applicable to maven command line and also honoured by Eclipse as 
+        well. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-avro-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>target/generated-sources/avro</source>
+                <source>target/generated-test-sources/cucumber</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+</project>
