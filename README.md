@@ -12,7 +12,8 @@ The typical usage of this annotation is like (see tests):
  @RunWith(SpringRunner.class)
  @EmbeddedKafkaCluster(topics = {"test.t"})
  public class MyKafkaTests {
-
+    
+    // optionally autowire if needed
     @Autowired
     private EmbeddedSingleNodeKafkaCluster embeddedSingleNodeKafkaCluster;
 
@@ -29,23 +30,21 @@ Always use "topics" parameter to pre-create all topics that you use, as it speed
 
 ## Running multiples tests in parallel
 
-### Versions: 3.x.x - latest 
-
 <a href="https://www.testcontainers.org/">Testcontainers</a> framework is used to spin up docker containers to form a proper Kafka cluster (broker, zookeeper, schema registry). Each service has its own container, while the test (e.g. junit or cucumber feature) runs locally (not in a container).
 
-  ```
+```
 46141b0a712b        confluentinc/cp-kafka:4.1.2             "/etc/confluent/dock…"   32 seconds ago      Up 28 seconds       0.0.0.0:33158->9092/tcp, 0.0.0.0:33157->9093/tcp                            confident_williams
 24685e0dd16a        alpine/socat:latest                     "/bin/sh -c 'socat T…"   41 seconds ago      Up 35 seconds       0.0.0.0:33156->2181/tcp, 0.0.0.0:33155->9093/tcp                            testcontainers-socat-Vsk8MbBx
 2e975fe6b3fc        confluentinc/cp-schema-registry:4.1.2   "/etc/confluent/dock…"   41 seconds ago      Up 36 seconds       0.0.0.0:33151->8081/tcp                                                     fervent_neumann
 6ead242bca82        confluentinc/cp-zookeeper:4.1.2         "/etc/confluent/dock…"   41 seconds ago      Up 36 seconds       0.0.0.0:33154->2181/tcp, 0.0.0.0:33153->2888/tcp, 0.0.0.0:33152->3888/tcp   friendly_heyrovsky
 42bc258afbd2        quay.io/testcontainers/ryuk:0.2.2       "/app"                   46 seconds ago      Up 43 seconds       0.0.0.0:33150->8080/tcp        
-  ```
+```
 
 Docker deals with all port allocations and there is no chance of port conflicts.
 
 Tests (junit ones or cucumber features) may run in parallel. Select proper maven profile to control the level of parallelism (rule of thump is the # of cores). If you use too many jvms your laptop will be unresponsive and random tests will fail.
 
-  ```
+```
 mvn package -Pparallel_2_jvms # default profile if none is set
 
 mvn package -Pparallel_3_jvms
@@ -53,7 +52,7 @@ mvn package -Pparallel_3_jvms
 mvn package -Pparallel_4_jvms
 
 mvn package -Pserial
-  ```
+```
   
 #### alpine/socat:latest
 
