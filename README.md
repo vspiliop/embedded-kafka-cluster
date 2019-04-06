@@ -4,13 +4,15 @@ Includes Kafka related testing utilities.
 
 ## Build/ Install
 
-# Build and run tests
+Requires a running docker service.
+
+### Build and run tests
 
 ```
 mvn clean package
 ```
 
-# Run tests and install to local maven repo 
+### Run tests and install to local maven repo 
 
 ```
 mvn clean install
