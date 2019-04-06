@@ -18,9 +18,28 @@ mvn clean install
 
 ## @EmbeddedKafkaCluster
 
+### Features
+
+ * Start a docker based Kafka cluster that includes one or more Kafka brokers, Zookeepers and Confluent Schema Registries.
+ * Parameterize the cluster (see Parameters section).
+ * The cluster starts before the test spring context.
+ * Reconfigure your spring test context to point to the embedded Kafka cluster (e.g point to the proper IPs and ports).
+ * Run more than one unit test or Cucumber feature scenario in parallel and reduce the total execution time.
+
+### Parameters
+
+| Parameter | Description | Example
+| --- | --- |
+| topics | List of topics to be created | topics = {"topic1.t", "topic2.t"} or topics = { "${my.application.property}" }
+| brokersCount | # of brokers of the cluster | brokersCount = 3
+| zookeepersCount | # of ZKs of the cluster | zookeepersCount = 3
+| schemaRegistriesCount | # of Confluent Schema Registries of the cluster | zookeepersCount = 3
+
+### Usage Examples
+
 <a href="https://www.testcontainers.org/">Testcontainers</a> based.
 
-The typical usage of this annotation is like (see tests): 
+The typical usage of this annotation is like (see also tests): 
 
 ```
  @RunWith(SpringRunner.class)
@@ -34,7 +53,7 @@ The typical usage of this annotation is like (see tests):
  }
 ```
 
-Control the number of services that form the cluster (see tests):
+Control the number of services that form the cluster (see also tests):
 
 ```
 @EmbeddedKafkaCluster(topics = {"test.t"}, brokersCount = 1, zookeepersCount = 1, schemaRegistriesCount = 1)
