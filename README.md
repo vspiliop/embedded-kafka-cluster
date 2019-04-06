@@ -18,9 +18,37 @@ mvn clean install
 
 ## @EmbeddedKafkaCluster
 
+### Features
+
+ * Start a docker based Kafka cluster that includes one or more Kafka brokers, Zookeepers and Confluent Schema Registries.
+ * Parameterize the cluster (see Parameters section).
+ * The cluster starts before the test spring context.
+ * Reconfigure your spring test context to point to the embedded Kafka cluster (e.g point to the proper IPs and ports).
+ * Run more than one unit test or Cucumber feature scenario in parallel and reduce the total execution time.
+
+### Parameters
+
+| Parameter | Description | Example | Default Value |
+| --- | --- | --- | --- |
+| topics | List of topics to be created | topics = {"topic1.t", "topic2.t"} or topics = {"${my.spring.property}"} | |
+| brokersCount or value | # of brokers of the cluster | brokersCount = 3 | 1 |
+| zookeepersCount | # of ZKs of the cluster | zookeepersCount = 3 | 1 |
+| schemaRegistriesCount | # of Confluent Schema Registries of the cluster | schemaRegistriesCount = 3 | 1 |
+| kafkaServersProperty | The spring test context property to reconfigure, so that it points to the embedded Kafka broker  | kafkaServersProperty = "my.broker.url" | config.kafka.bootstrap |
+| schemaRegistryServersProperty | The spring test context property to reconfigure, so that it points to the embedded Schema Registry | schemaRegistryServersProperty = "my.registry.url" | config.kafka.registry |
+| platformVersion | Confluent platform version | 4.1.2 | 4.1.2 |
+| minInSyncReplicas | Minimum in sync replicas for all topics, apart from transaction internal ones. | 1 | 1 |
+| minTransactionInSynceReplicas |  Minimum in sync replicas for transaction internal topics.  | 1 | 1 |
+| defaultReplicationFactor | Default replication factor for all topics, apart from internal ones. | 1 | 1 |
+| transactionReplicationFactor | Default replication factor for transaction topic. | 1 | 1 |
+| offsetsReplicationFactor | Default replication factor for offsets internal topic. | 1 | 1 |
+| schemaRegistryReplicationFactor | Replication factor for _schemas topic used by Confluent Schema Registry. | 1 | 1 |
+
+### Usage Examples
+
 <a href="https://www.testcontainers.org/">Testcontainers</a> based.
 
-The typical usage of this annotation is like (see tests): 
+The typical usage of this annotation is like (see also tests): 
 
 ```
  @RunWith(SpringRunner.class)
@@ -29,12 +57,12 @@ The typical usage of this annotation is like (see tests):
     
     // optionally autowire if needed
     @Autowired
-    private EmbeddedSingleNodeKafkaCluster embeddedSingleNodeKafkaCluster;
+    private EmbeddedMultiNodeKafkaCluster embeddedMultiNodeKafkaCluster;
 
  }
 ```
 
-Control the number of services that form the cluster (see tests):
+Control the number of services that form the cluster (see also tests):
 
 ```
 @EmbeddedKafkaCluster(topics = {"test.t"}, brokersCount = 1, zookeepersCount = 1, schemaRegistriesCount = 1)

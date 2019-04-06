@@ -68,12 +68,12 @@ public @interface EmbeddedKafkaCluster {
 	/**
 	 * The spring test context property to reconfigure, so that it points to the embedded Kafka broker
 	 */
-	String kafkaServersProperty() default "config.kafka-streams.bootstrap";
+	String kafkaServersProperty() default "config.kafka.bootstrap";
 
 	/**
 	 * The spring test context property to reconfigure, so that it points to the embedded Schema Registry
 	 */
-	String schemaRegistryServersProperty() default "config.kafka-streams.registry";
+	String schemaRegistryServersProperty() default "config.kafka.registry";
 	
 	/**
 	 * Confluent paltform version.
