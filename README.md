@@ -34,9 +34,9 @@ mvn clean install
 | brokersCount or value | # of brokers of the cluster | brokersCount = 3 | 1 |
 | zookeepersCount | # of ZKs of the cluster | zookeepersCount = 3 | 1 |
 | schemaRegistriesCount | # of Confluent Schema Registries of the cluster | zookeepersCount = 3 | 1 |
-| kafkaServersProperty |  The spring test context property to reconfigure, so that it points to the embedded Kafka broker  | kafkaServersProperty="my.broker.url" | config.kafka-streams.bootstrap |
-| schemaRegistryServersProperty | The spring test context property to reconfigure, so that it points to the embedded Schema Registry | schemaRegistryServersProperty="my.registry.url" | config.kafka-streams.registry |
-| platformVersion | Confluent paltform version | 4.1.2 | 4.1.2 |
+| kafkaServersProperty | The spring test context property to reconfigure, so that it points to the embedded Kafka broker  | kafkaServersProperty = "my.broker.url" | config.kafka-streams.bootstrap |
+| schemaRegistryServersProperty | The spring test context property to reconfigure, so that it points to the embedded Schema Registry | schemaRegistryServersProperty = "my.registry.url" | config.kafka-streams.registry |
+| platformVersion | Confluent platform version | 4.1.2 | 4.1.2 |
 | minInSyncReplicas | Minimum in sync replicas for all topics, apart from transaction internal ones. | 1 | 1 |
 | minTransactionInSynceReplicas |  Minimum in sync replicas for transaction internal topics.  | 1 | 1 |
 | defaultReplicationFactor | Default replication factor for all topics, apart from internal ones. | 1 | 1 |
