@@ -33,7 +33,7 @@ mvn clean install
 | topics | List of topics to be created | topics = {"topic1.t", "topic2.t"} or topics = {"${my.spring.property}"} | |
 | brokersCount or value | # of brokers of the cluster | brokersCount = 3 | 1 |
 | zookeepersCount | # of ZKs of the cluster | zookeepersCount = 3 | 1 |
-| schemaRegistriesCount | # of Confluent Schema Registries of the cluster | zookeepersCount = 3 | 1 |
+| schemaRegistriesCount | # of Confluent Schema Registries of the cluster | schemaRegistriesCount = 3 | 1 |
 | kafkaServersProperty | The spring test context property to reconfigure, so that it points to the embedded Kafka broker  | kafkaServersProperty = "my.broker.url" | config.kafka-streams.bootstrap |
 | schemaRegistryServersProperty | The spring test context property to reconfigure, so that it points to the embedded Schema Registry | schemaRegistryServersProperty = "my.registry.url" | config.kafka-streams.registry |
 | platformVersion | Confluent platform version | 4.1.2 | 4.1.2 |
