@@ -94,12 +94,6 @@
         <version>${confluent-version}</version>
       </dependency>
 
-  <dependency>
-    <groupId>org.apache.kafka</groupId>
-    <artifactId>kafka-streams-examples</artifactId>
-    <version>1.0.2</version>
-  </dependency>
-
       <dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro</artifactId>
