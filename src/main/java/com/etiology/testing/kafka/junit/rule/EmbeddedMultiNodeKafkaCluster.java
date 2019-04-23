@@ -53,7 +53,7 @@ public class EmbeddedMultiNodeKafkaCluster extends ExternalResource implements I
 	/**
 	 * Creates and starts the cluster.
 	 */
-	@SuppressWarnings({ "rawtypes", "resource" })
+	@SuppressWarnings({ "rawtypes" })
 	public EmbeddedMultiNodeKafkaCluster(EmbeddedKafkaCluster embeddedKafka) {
 		// e.g. zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
 		String externalZookeeperUrl = IntStream.range(1, embeddedKafka.zookeepersCount() + 1)
