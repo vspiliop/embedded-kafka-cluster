@@ -1,6 +1,6 @@
 # kafka-testing-utilities #
 
-Includes Kafka related testing utilities.
+Start a fully configurable docker based Kafka cluster as part of your tests. 
 
 ## Build/ Install
 
@@ -106,28 +106,12 @@ A <a href="https://www.testcontainers.org/">testcontainer</a> specific instance 
 
 A <a href="https://www.testcontainers.org/">testcontainer</a> specific instance used by the framework to start and stop containers.
 
-## IntegrationTestUtils
-
-Helper methods to send and receive event based on ([IntegrationTestUtils.java](https://github.com/confluentinc/kafka-streams-examples/blob/master/src/test/java/io/confluent/examples/streams/IntegrationTestUtils.java))
-
-When producing or consuming via the helper methods the port lookup for Kafka broker is as follows:
- 1. explicitly passed
- 2. UNIT_TEST_KAFKA_PORT jvm parameter is evaluated
- 3. UNIT_TEST_KAFKA_PORT environmental property is evaluated
- 4. Default value 9092 is used
- 
-When producing or consuming via the helper methods the port lookup for Schema Registry is as follows:
- 1. explicitly passed
- 2. UNIT_TEST_REGISTRY_PORT jvm parameter is evaluated
- 3. UNIT_TEST_REGISTRY_PORT environmental property is evaluated
- 4. Default value 8082 is used
-
 ## Add as a test dependency to your project
 
 ```
 <dependency>
   <groupId>com.etiology.testing</groupId>
-  <artifactId>kafka-testing-utilities</artifactId>
+  <artifactId>embedded-kafka-cluster</artifactId>
   <version>...</version>
   <scope>test</scope>
 </dependency>
