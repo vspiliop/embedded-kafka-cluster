@@ -7,39 +7,69 @@
   <groupId>com.etiology.testing</groupId>
   <artifactId>embedded-kafka-cluster</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>embedded-kafka-cluster</name>
+  <description>Start a fully configurable docker based Kafka cluster as part of your tests</description>
+  <url>https://github.com/vspiliop/embedded-kafka-cluster</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Vassilis Spiliopoulos</name>
+      <email>2billy@gmail.com</email>
+      <organization>Etiology</organization>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/vspiliop/embedded-kafka-cluster.git</connection>
+    <developerConnection>scm:git:ssh://github.com:vspiliop/embedded-kafka-cluster.git</developerConnection>
+    <url>https://github.com/vspiliop/embedded-kafka-cluster/tree/master</url>
+  </scm>
 
   <properties>
-    <java-version>10</java-version>
+    <java.version>10</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
+
     <!-- Maven Plugin Version -->
 
-    <maven-compiler-plugin-version>3.7.0</maven-compiler-plugin-version>
-    <maven-resources-plugin-version>3.1.0</maven-resources-plugin-version>
-    <maven-surefire-plugin-version>2.22.0</maven-surefire-plugin-version>
+    <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+    <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
+    <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
     <cucumber-jvm-parallel-plugin.version>5.0.0</cucumber-jvm-parallel-plugin.version>
-    <build-helper-maven-plugin-version>3.0.0</build-helper-maven-plugin-version>
+    <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+    <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+    <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+    <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
+    <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 
     <!-- Dependencies Version -->
 
     <spring-boot.version>2.0.3.RELEASE</spring-boot.version>
-    <lombok-version>1.16.22</lombok-version>
+    <lombok.version>1.16.22</lombok.version>
     <testcontainers.version>1.10.5</testcontainers.version>
-    
+
     <!-- Test Dependencies Version -->
-    
-    <kafka-streams-version>1.0.1</kafka-streams-version>
-    <avro-version>1.8.2</avro-version>
-    <confluent-version>4.1.1</confluent-version>
+
+    <kafka-streams.version>1.0.1</kafka-streams.version>
+    <avro.version>1.8.2</avro.version>
+    <confluent.version>4.1.1</confluent.version>
     <awaitility.version>3.1.1</awaitility.version>
     <cucumber.version>2.4.0</cucumber.version>
-    
+
   </properties>
 
   <!-- Defines if the tests will run parallel or serial -->
-  
+
   <profiles>
-  
+
     <!-- Run X (i.e. 2, 3, or 4) number of tests in separate java jvm(s) -->
     <profile>
       <id>parallel_2_jvms</id>
@@ -50,28 +80,28 @@
         <surefire.forkCount>2</surefire.forkCount>
       </properties>
     </profile>
-    
+
     <profile>
       <id>parallel_3_jvms</id>
       <properties>
         <surefire.forkCount>3</surefire.forkCount>
       </properties>
     </profile>
-    
+
     <profile>
       <id>parallel_4_jvms</id>
       <properties>
         <surefire.forkCount>4</surefire.forkCount>
       </properties>
     </profile>
-    
+
     <profile>
       <id>serial</id>
       <properties>
         <surefire.forkCount>1</surefire.forkCount>
       </properties>
     </profile>
-    
+
   </profiles>
 
   <dependencyManagement>
@@ -95,35 +125,34 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>${lombok-version}</version>
+        <version>${lombok.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.testcontainers</groupId>
         <artifactId>kafka</artifactId>
         <version>${testcontainers.version}</version>
       </dependency>
-      
-      <!-- Test Dependencies -->
-      
+
       <dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro</artifactId>
-        <version>${avro-version}</version>
-        <scope>test</scope>
+        <version>${avro.version}</version>
       </dependency>
-      
+
+      <!-- Test Dependencies -->
+
       <dependency>
         <groupId>org.apache.kafka</groupId>
         <artifactId>kafka-streams</artifactId>
-        <version>${kafka-streams-version}</version>
+        <version>${kafka-streams.version}</version>
         <scope>test</scope>
       </dependency>
-      
+
       <dependency>
         <groupId>io.confluent</groupId>
         <artifactId>kafka-streams-avro-serde</artifactId>
-        <version>${confluent-version}</version>
+        <version>${confluent.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -240,6 +269,17 @@
     </repository>
   </repositories>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
   <build>
 
     <pluginManagement>
@@ -248,8 +288,63 @@
 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven-source-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>
+              <goals>
+                <goal>jar</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven-gpg-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>sign-artifacts</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>${nexus-staging-maven-plugin.version}</version>
+          <extensions>true</extensions>
+          <configuration>
+            <serverId>ossrh</serverId>
+            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>${maven-resources-plugin-version}</version>
+          <version>${maven-resources-plugin.version}</version>
           <configuration>
             <encoding>${project.build.sourceEncoding}</encoding>
           </configuration>
@@ -257,10 +352,10 @@
 
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven-compiler-plugin-version}</version>
+          <version>${maven-compiler-plugin.version}</version>
           <configuration>
-            <source>${java-version}</source>
-            <target>${java-version}</target>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
           </configuration>
         </plugin>
 
@@ -297,7 +392,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven-surefire-plugin-version}</version>
+          <version>${maven-surefire-plugin.version}</version>
           <configuration>
             <forkCount>${surefire.forkCount}</forkCount>
             <reuseForks>false</reuseForks>
@@ -321,67 +416,43 @@
         <plugin>
           <groupId>org.apache.avro</groupId>
           <artifactId>avro-maven-plugin</artifactId>
-          <version>${avro-version}</version>
+          <version>${avro.version}</version>
+          <executions>
+            <execution>
+              <phase>generate-test-sources</phase>
+              <goals>
+                <goal>schema</goal>
+                <goal>protocol</goal>
+                <goal>idl-protocol</goal>
+              </goals>
+              <configuration>
+                <sourceDirectory>${project.basedir}/src/test/resources/avro</sourceDirectory>
+                <stringType>String</stringType>
+                <fieldVisibility>PRIVATE</fieldVisibility>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>${build-helper-maven-plugin-version}</version>
-        </plugin>
-
-        <!--This plugin's configuration is used to store Eclipse m2e settings 
-          only. It has no influence on the Maven build itself. -->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>
-                      org.apache.avro
-                    </groupId>
-                    <artifactId>
-                      avro-maven-plugin
-                    </artifactId>
-                    <versionRange>
-                      [1.8.2,)
-                    </versionRange>
-                    <goals>
-                      <goal>schema</goal>
-                      <goal>protocol</goal>
-                      <goal>idl-protocol</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>
-                      com.github.temyers
-                    </groupId>
-                    <artifactId>
-                      cucumber-jvm-parallel-plugin
-                    </artifactId>
-                    <versionRange>
-                      [5.0.0,)
-                    </versionRange>
-                    <goals>
-                      <goal>generateRunners</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
+          <version>${build-helper-maven-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>add-avro-source</id>
+              <phase>generate-test-sources</phase>
+              <goals>
+                <goal>add-test-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>target/generated-sources/avro</source>
+                  <source>target/generated-test-sources/cucumber</source>
+                </sources>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
       </plugins>
@@ -389,6 +460,34 @@
     </pluginManagement>
 
     <plugins>
+
+      <!-- Required for maven central deployment -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+      </plugin>
+
+      <!-- Required for maven central deployment -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+
+      <!-- Required for maven central deployment -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+      </plugin>
+
+      <!-- Required for maven central deployment -->
+      
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+      </plugin>
 
       <plugin>
         <groupId>com.github.temyers</groupId>
@@ -405,21 +504,6 @@
       <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>schema</goal>
-              <goal>protocol</goal>
-              <goal>idl-protocol</goal>
-            </goals>
-            <configuration>
-              <sourceDirectory>${project.basedir}/src/test/resources/avro</sourceDirectory>
-              <stringType>String</stringType>
-              <fieldVisibility>PRIVATE</fieldVisibility>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <!-- Add the generated classes to the test sources of the maven project. 
@@ -428,21 +512,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>add-avro-source</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>add-test-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>target/generated-sources/avro</source>
-                <source>target/generated-test-sources/cucumber</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
     </plugins>
