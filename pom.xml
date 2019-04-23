@@ -132,7 +132,7 @@
         <artifactId>kafka</artifactId>
         <version>${testcontainers.version}</version>
       </dependency>
-      
+
       <dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro</artifactId>
@@ -404,66 +404,42 @@
           <groupId>org.apache.avro</groupId>
           <artifactId>avro-maven-plugin</artifactId>
           <version>${avro.version}</version>
+          <executions>
+            <execution>
+              <phase>generate-test-sources</phase>
+              <goals>
+                <goal>schema</goal>
+                <goal>protocol</goal>
+                <goal>idl-protocol</goal>
+              </goals>
+              <configuration>
+                <sourceDirectory>${project.basedir}/src/test/resources/avro</sourceDirectory>
+                <stringType>String</stringType>
+                <fieldVisibility>PRIVATE</fieldVisibility>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>${build-helper-maven-plugin.version}</version>
-        </plugin>
-
-        <!--This plugin's configuration is used to store Eclipse m2e settings 
-          only. It has no influence on the Maven build itself. -->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>
-                      org.apache.avro
-                    </groupId>
-                    <artifactId>
-                      avro-maven-plugin
-                    </artifactId>
-                    <versionRange>
-                      [1.8.2,)
-                    </versionRange>
-                    <goals>
-                      <goal>schema</goal>
-                      <goal>protocol</goal>
-                      <goal>idl-protocol</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>
-                      com.github.temyers
-                    </groupId>
-                    <artifactId>
-                      cucumber-jvm-parallel-plugin
-                    </artifactId>
-                    <versionRange>
-                      [5.0.0,)
-                    </versionRange>
-                    <goals>
-                      <goal>generateRunners</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
+          <executions>
+            <execution>
+              <id>add-avro-source</id>
+              <phase>generate-test-sources</phase>
+              <goals>
+                <goal>add-test-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>target/generated-sources/avro</source>
+                  <source>target/generated-test-sources/cucumber</source>
+                </sources>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
 
       </plugins>
@@ -487,7 +463,7 @@
       </plugin>
 
       <!-- Required for maven central deployment -->
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
@@ -508,21 +484,6 @@
       <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>schema</goal>
-              <goal>protocol</goal>
-              <goal>idl-protocol</goal>
-            </goals>
-            <configuration>
-              <sourceDirectory>${project.basedir}/src/test/resources/avro</sourceDirectory>
-              <stringType>String</stringType>
-              <fieldVisibility>PRIVATE</fieldVisibility>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
       <!-- Add the generated classes to the test sources of the maven project. 
@@ -531,21 +492,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>add-avro-source</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>add-test-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>target/generated-sources/avro</source>
-                <source>target/generated-test-sources/cucumber</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
 
     </plugins>
