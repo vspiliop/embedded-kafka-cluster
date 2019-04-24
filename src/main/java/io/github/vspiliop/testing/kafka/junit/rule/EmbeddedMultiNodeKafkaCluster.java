@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EmbeddedMultiNodeKafkaCluster extends ExternalResource implements InitializingBean, DisposableBean {
 
-	public static final String BEAN_NAME = "embeddedSingleNodeKafkaCluster";
+	public static final String BEAN_NAME = "embeddedMultiNodeKafkaCluster";
 
 	final List<KafkaContainer> brokers;
 
