@@ -1,4 +1,4 @@
-package com.etiology.testing.kafka;
+package io.github.vspiliop.testing.kafka;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,14 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.etiology.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
-import com.etiology.testing.kafka.spring.context.EmbeddedKafkaCluster;
-import com.etiology.testing.kafka.util.IntegrationTestUtils;
-import com.etiology.schema.test.TestCreated;
-import com.etiology.schema.test.TestEvents;
+import io.github.vspiliop.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
+import io.github.vspiliop.schema.test.TestCreated;
+import io.github.vspiliop.schema.test.TestEvents;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.github.vspiliop.testing.kafka.spring.context.EmbeddedKafkaCluster;
+import io.github.vspiliop.testing.kafka.util.IntegrationTestUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @RunWith(SpringRunner.class)

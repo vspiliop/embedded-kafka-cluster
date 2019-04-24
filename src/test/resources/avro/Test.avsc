@@ -1,7 +1,7 @@
 {
    "type":"record",
    "name":"TestEvents",
-   "namespace":"com.etiology.schema.test",
+   "namespace":"io.github.vspiliop.schema.test",
    "fields":[
       {
          "name":"type",

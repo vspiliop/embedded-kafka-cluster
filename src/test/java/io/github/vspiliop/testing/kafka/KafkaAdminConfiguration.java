@@ -1,4 +1,4 @@
-package com.etiology.testing.kafka;
+package io.github.vspiliop.testing.kafka;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;
 
-import com.etiology.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
-
+import io.github.vspiliop.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
 import lombok.extern.slf4j.Slf4j;
 
 /**

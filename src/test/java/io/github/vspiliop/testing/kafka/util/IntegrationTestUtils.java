@@ -1,4 +1,4 @@
-package com.etiology.testing.kafka.util;
+package io.github.vspiliop.testing.kafka.util;
 
 
 import java.util.ArrayList;

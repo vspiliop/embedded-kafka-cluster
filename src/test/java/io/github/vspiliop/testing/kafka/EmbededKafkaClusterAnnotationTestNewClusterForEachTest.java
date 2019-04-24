@@ -1,4 +1,4 @@
-package com.etiology.testing.kafka;
+package io.github.vspiliop.testing.kafka;
 
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;

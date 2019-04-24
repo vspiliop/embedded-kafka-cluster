@@ -1,4 +1,4 @@
-package com.etiology.testing.kafka.steps;
+package io.github.vspiliop.testing.kafka.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,11 +14,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.etiology.schema.test.TestCreated;
-import com.etiology.schema.test.TestEvents;
-import com.etiology.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
-import com.etiology.testing.kafka.spring.context.EmbeddedKafkaCluster;
-import com.etiology.testing.kafka.util.IntegrationTestUtils;
+import io.github.vspiliop.schema.test.TestCreated;
+import io.github.vspiliop.schema.test.TestEvents;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
@@ -26,6 +23,9 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.When;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.github.vspiliop.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
+import io.github.vspiliop.testing.kafka.spring.context.EmbeddedKafkaCluster;
+import io.github.vspiliop.testing.kafka.util.IntegrationTestUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
