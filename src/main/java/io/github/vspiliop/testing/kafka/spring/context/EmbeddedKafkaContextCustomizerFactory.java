@@ -1,4 +1,4 @@
-package com.etiology.testing.kafka.spring.context;
+package io.github.vspiliop.testing.kafka.spring.context;
 
 import java.util.List;
 

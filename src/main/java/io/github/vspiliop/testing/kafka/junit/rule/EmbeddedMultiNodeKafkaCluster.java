@@ -1,4 +1,4 @@
-package com.etiology.testing.kafka.junit.rule;
+package io.github.vspiliop.testing.kafka.junit.rule;
 
 import java.time.Duration;
 import java.util.List;
@@ -15,8 +15,7 @@ import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
-import com.etiology.testing.kafka.spring.context.EmbeddedKafkaCluster;
-
+import io.github.vspiliop.testing.kafka.spring.context.EmbeddedKafkaCluster;
 import lombok.extern.slf4j.Slf4j;
 
 /**

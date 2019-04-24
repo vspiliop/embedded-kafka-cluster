@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.etiology.testing</groupId>
+  <groupId>io.github.vspiliop.testing</groupId>
   <artifactId>embedded-kafka-cluster</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -373,11 +373,11 @@
                 <goal>generateRunners</goal>
               </goals>
               <configuration>
-                <glue>com.etiology.testing.kafka.steps</glue>
-                <featuresDirectory>src/test/java/com/etiology/testing/kafka/feature</featuresDirectory>
+                <glue>io.github.vspiliop.testing.kafka.steps</glue>
+                <featuresDirectory>src/test/java/io/github/vspiliop/testing/kafka/feature</featuresDirectory>
                 <cucumberOutputDir>target/cucumber-parallel</cucumberOutputDir>
                 <outputDirectory>${project.build.directory}/generated-test-sources/cucumber</outputDirectory>
-                <packageName>com.etiology.testing.kafka.support</packageName>
+                <packageName>io.github.vspiliop.kafka.support</packageName>
                 <format>json,html</format>
                 <tags>
                   <tag>~@wip</tag>

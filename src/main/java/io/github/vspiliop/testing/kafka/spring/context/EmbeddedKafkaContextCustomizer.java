@@ -1,4 +1,4 @@
-package com.etiology.testing.kafka.spring.context;
+package io.github.vspiliop.testing.kafka.spring.context;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,8 +15,7 @@ import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.Assert;
 
-import com.etiology.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
-
+import io.github.vspiliop.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
 import lombok.extern.slf4j.Slf4j;
 
 /**
