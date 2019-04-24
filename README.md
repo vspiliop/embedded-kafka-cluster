@@ -110,7 +110,7 @@ A <a href="https://www.testcontainers.org/">testcontainer</a> specific instance 
 
 ```
 <dependency>
-  <groupId>com.etiology.testing</groupId>
+  <groupId>io.github.vspiliop.testing</groupId>
   <artifactId>embedded-kafka-cluster</artifactId>
   <version>...</version>
   <scope>test</scope>
