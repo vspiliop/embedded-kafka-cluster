@@ -30,7 +30,7 @@
 
   <scm>
     <connection>scm:git:git://github.com/vspiliop/embedded-kafka-cluster.git</connection>
-    <developerConnection>scm:git:ssh://github.com:vspiliop/embedded-kafka-cluster.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:vspiliop/embedded-kafka-cluster.git</developerConnection>
     <url>http://github.com/vspiliop/embedded-kafka-cluster/tree/master</url>
   </scm>
 
