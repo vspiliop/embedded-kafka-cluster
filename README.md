@@ -18,6 +18,18 @@ mvn clean package
 mvn clean install
 ```
 
+### Release to Sonatype Nexus Repository Manager and Maven Central
+
+```
+mvn release:clean release:prepare
+```
+
+followed by
+
+```
+mvn release:perform
+```
+
 ## @EmbeddedKafkaCluster
 
 ### Features
@@ -108,11 +120,13 @@ A <a href="https://www.testcontainers.org/">testcontainer</a> specific instance 
 
 ## Add as a test dependency to your project
 
+From Maven Central as follows:
+
 ```
 <dependency>
   <groupId>io.github.vspiliop.testing</groupId>
   <artifactId>embedded-kafka-cluster</artifactId>
-  <version>...</version>
+  <version>0.0.1</version>
   <scope>test</scope>
 </dependency>
 ```
