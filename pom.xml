@@ -29,9 +29,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/vspiliop/embedded-kafka-cluster.git</connection>
-    <developerConnection>scm:git:https://github.com/vspiliop/embedded-kafka-cluster.git</developerConnection>
-    <url>https://github.com/vspiliop/embedded-kafka-cluster/tree/master</url>
+    <connection>scm:git:git://github.com/vspiliop/embedded-kafka-cluster.git</connection>
+    <developerConnection>scm:git:ssh://github.com:vspiliop/embedded-kafka-cluster.git</developerConnection>
+    <url>http://github.com/vspiliop/embedded-kafka-cluster/tree/master</url>
   </scm>
 
   <properties>
@@ -108,13 +108,13 @@
       <id>release</id>
       <build>
         <plugins>
-        
+
           <!-- Required for maven central deployment -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
           </plugin>
-          
+
           <!-- Required for maven central deployment -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -126,7 +126,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
           </plugin>
-          
+
         </plugins>
       </build>
     </profile>
