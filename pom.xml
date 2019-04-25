@@ -46,9 +46,10 @@
     <cucumber-jvm-parallel-plugin.version>5.0.0</cucumber-jvm-parallel-plugin.version>
     <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
     <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
-    <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+    <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
     <maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
     <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+    <avro-maven-plugin.version>1.8.2</avro-maven-plugin.version>
 
     <!-- Dependencies Version -->
 
@@ -59,10 +60,10 @@
     <!-- Test Dependencies Version -->
 
     <kafka-streams.version>1.0.1</kafka-streams.version>
-    <avro.version>1.8.2</avro.version>
     <confluent.version>4.1.1</confluent.version>
     <awaitility.version>3.1.1</awaitility.version>
     <cucumber.version>2.4.0</cucumber.version>
+    <avro.version>1.8.2</avro.version>
 
   </properties>
 
@@ -134,13 +135,14 @@
         <version>${testcontainers.version}</version>
       </dependency>
 
+      <!-- Test Dependencies -->
+      
       <dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro</artifactId>
         <version>${avro.version}</version>
+        <scope>test</scope>
       </dependency>
-
-      <!-- Test Dependencies -->
 
       <dependency>
         <groupId>org.apache.kafka</groupId>
@@ -304,6 +306,9 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>${maven-javadoc-plugin.version}</version>
+          <configuration>
+            <excludePackageNames>io.github.vspiliop.schema.test</excludePackageNames>
+          </configuration>
           <executions>
             <execution>
               <id>attach-javadocs</id>
@@ -416,7 +421,7 @@
         <plugin>
           <groupId>org.apache.avro</groupId>
           <artifactId>avro-maven-plugin</artifactId>
-          <version>${avro.version}</version>
+          <version>${avro-maven-plugin.version}</version>
           <executions>
             <execution>
               <phase>generate-test-sources</phase>
@@ -427,6 +432,7 @@
               </goals>
               <configuration>
                 <sourceDirectory>${project.basedir}/src/test/resources/avro</sourceDirectory>
+                <outputDirectory>${project.build.directory}/generated-test-sources/avro</outputDirectory>
                 <stringType>String</stringType>
                 <fieldVisibility>PRIVATE</fieldVisibility>
               </configuration>
@@ -447,7 +453,7 @@
               </goals>
               <configuration>
                 <sources>
-                  <source>target/generated-sources/avro</source>
+                  <source>target/generated-test-sources/avro</source>
                   <source>target/generated-test-sources/cucumber</source>
                 </sources>
               </configuration>
