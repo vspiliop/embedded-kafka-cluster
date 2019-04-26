@@ -23,13 +23,13 @@ import lombok.extern.slf4j.Slf4j;
 public class KafkaAdminConfiguration {
 	
 	@Autowired
-	EmbeddedMultiNodeKafkaCluster embeddedSingleNodeKafkaCluster;
+	EmbeddedMultiNodeKafkaCluster embeddedMultiNodeKafkaCluster;
 	
 	@Bean
 	public KafkaAdmin kafkaAdmin() {
 		log.debug("Creating test KafkaAdmin.");
 	    Map<String, Object> configs = new HashMap<>();
-	    configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, embeddedSingleNodeKafkaCluster.getKafkaBootstapServers());
+	    configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, embeddedMultiNodeKafkaCluster.getKafkaBootstapServers());
 	    configs.put(AdminClientConfig.CLIENT_ID_CONFIG, "test-kafka-admin-client-id");
 	    return new KafkaAdmin(configs);
 	}

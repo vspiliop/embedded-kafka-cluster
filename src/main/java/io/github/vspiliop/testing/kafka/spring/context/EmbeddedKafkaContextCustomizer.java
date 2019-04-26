@@ -53,25 +53,25 @@ class EmbeddedKafkaContextCustomizer implements ContextCustomizer {
 		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
 		Assert.isInstanceOf(DefaultSingletonBeanRegistry.class, beanFactory);
 
-		EmbeddedMultiNodeKafkaCluster embeddedSingleNodeKafkaCluster = new EmbeddedMultiNodeKafkaCluster(embeddedKafka);
+		EmbeddedMultiNodeKafkaCluster embeddedMultiNodeKafkaCluster = new EmbeddedMultiNodeKafkaCluster(embeddedKafka);
 
-		beanFactory.initializeBean(embeddedSingleNodeKafkaCluster, EmbeddedMultiNodeKafkaCluster.BEAN_NAME);
-		beanFactory.registerSingleton(EmbeddedMultiNodeKafkaCluster.BEAN_NAME, embeddedSingleNodeKafkaCluster);
+		beanFactory.initializeBean(embeddedMultiNodeKafkaCluster, EmbeddedMultiNodeKafkaCluster.BEAN_NAME);
+		beanFactory.registerSingleton(EmbeddedMultiNodeKafkaCluster.BEAN_NAME, embeddedMultiNodeKafkaCluster);
 		((DefaultSingletonBeanRegistry) beanFactory).registerDisposableBean(EmbeddedMultiNodeKafkaCluster.BEAN_NAME,
-				embeddedSingleNodeKafkaCluster);
+				embeddedMultiNodeKafkaCluster);
 		// here the cluster is 100% up and we may reconfigure the application test properties and register topics for creation
-		registerTopicsForCreationByKafkaAdmin(beanFactory, embeddedSingleNodeKafkaCluster, context);
-		reconfigureTestContextProperties(context, embeddedSingleNodeKafkaCluster);
+    registerTopicsForCreationByKafkaAdmin(beanFactory, context);
+		reconfigureTestContextProperties(context, embeddedMultiNodeKafkaCluster);
 	}
 	
-	private void reconfigureTestContextProperties(ConfigurableApplicationContext context, EmbeddedMultiNodeKafkaCluster embeddedSingleNodeKafkaCluster) {
+	private void reconfigureTestContextProperties(ConfigurableApplicationContext context, EmbeddedMultiNodeKafkaCluster embeddedMultiNodeKafkaCluster) {
 		TestPropertyValues values = TestPropertyValues.of(
-				embeddedKafka.kafkaServersProperty() + "=" + embeddedSingleNodeKafkaCluster.getKafkaBootstapServers(),
-				embeddedKafka.schemaRegistryServersProperty() + "=" + embeddedSingleNodeKafkaCluster.getSchemaRegistryUrls());
+				embeddedKafka.kafkaServersProperty() + "=" + embeddedMultiNodeKafkaCluster.getKafkaBootstapServers(),
+				embeddedKafka.schemaRegistryServersProperty() + "=" + embeddedMultiNodeKafkaCluster.getSchemaRegistryUrls());
 		values.applyTo(context);
 	}
 	
-	private void registerTopicsForCreationByKafkaAdmin(ConfigurableListableBeanFactory beanFactory, EmbeddedMultiNodeKafkaCluster embeddedSingleNodeKafkaCluster, ConfigurableApplicationContext context) {
+	private void registerTopicsForCreationByKafkaAdmin(ConfigurableListableBeanFactory beanFactory, ConfigurableApplicationContext context) {
 		ConfigurableEnvironment environment = context.getEnvironment();
 		Stream.of(embeddedKafka.topics())
 						.map(environment::resolvePlaceholders)

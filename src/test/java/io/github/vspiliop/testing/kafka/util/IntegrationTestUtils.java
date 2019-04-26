@@ -313,8 +313,6 @@ public class IntegrationTestUtils {
    *          Minimum number of expected records
    * @param waitTime
    *          Upper bound in waiting time in milliseconds
-   * @param throwAssertionError
-   *          if true throw AssertionError if expectedNumRecords is not received
    * @return All the records consumed, or null if no records are consumed
    * @throws AssertionError
    *           if the given wait time elapses
