@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.vspiliop.testing</groupId>
@@ -36,6 +37,9 @@
   <properties>
     <java.version>10</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Tests to exclude -->
+    <test.excludes></test.excludes>
 
     <!-- Maven Plugin Version -->
 
@@ -504,19 +508,18 @@
     <plugins>
 
       <!-- Handy for releasing to maven central -->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
       </plugin>
 
       <!-- Required for maven central deployment -->
-
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
       </plugin>
 
+      <!-- For generating separate runners per feature scenario -->
       <plugin>
         <groupId>com.github.temyers</groupId>
         <artifactId>cucumber-jvm-parallel-plugin</artifactId>
