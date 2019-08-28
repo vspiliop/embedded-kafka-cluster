@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.vspiliop.testing</groupId>
   <artifactId>embedded-kafka-cluster</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2</version>
   <packaging>jar</packaging>
 
   <name>embedded-kafka-cluster</name>
@@ -31,7 +30,7 @@
     <connection>scm:git:git://github.com/vspiliop/embedded-kafka-cluster.git</connection>
     <developerConnection>scm:git:git@github.com:vspiliop/embedded-kafka-cluster.git</developerConnection>
     <url>http://github.com/vspiliop/embedded-kafka-cluster/tree/master</url>
-    <tag>HEAD</tag>
+    <tag>embedded-kafka-cluster-0.0.2</tag>
   </scm>
 
   <properties>
@@ -39,7 +38,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Tests to exclude -->
-    <test.excludes></test.excludes>
+    <test.excludes />
 
     <!-- Maven Plugin Version -->
 
@@ -525,7 +524,7 @@
         						</goals>
         					</pluginExecutionFilter>
         					<action>
-        						<ignore></ignore>
+        						<ignore />
         					</action>
         				</pluginExecution>
         				<pluginExecution>
@@ -540,7 +539,7 @@
         						</goals>
         					</pluginExecutionFilter>
         					<action>
-        						<ignore></ignore>
+        						<ignore />
         					</action>
         				</pluginExecution>
         			</pluginExecutions>
