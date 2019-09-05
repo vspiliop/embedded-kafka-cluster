@@ -20,9 +20,9 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Java version
- - Maven version
+ - OS: [e.g. Mac OS Mojave 10.14.6]
+ - Java version [e.g. Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.3+12-LTS, mixed mode)]
+ - Maven version [e.g. Apache Maven 3.2.1]
 
 **Additional context**
 Add any other context about the problem here.
