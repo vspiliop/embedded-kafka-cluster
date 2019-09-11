@@ -129,7 +129,7 @@ From Maven Central as follows:
 <dependency>
   <groupId>io.github.vspiliop.testing</groupId>
   <artifactId>embedded-kafka-cluster</artifactId>
-  <version>0.0.1</version>
+  <version>...</version>
   <scope>test</scope>
 </dependency>
 ```
