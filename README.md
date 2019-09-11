@@ -3,7 +3,7 @@
 
 # kafka-testing-utilities #
 
-Start a fully configurable docker based Kafka cluster as part of your tests. 
+Start a fully configurable docker based Kafka cluster as part of your tests by just by adding @EmbeddedKafkaCluster to your test class.
 
 ## Build/ Install
 
