@@ -1,6 +1,9 @@
+[![License](https://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.vspiliop.testing/embedded-kafka-cluster/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.vspiliop.testing/embedded-kafka-cluster)
+
 # kafka-testing-utilities #
 
-Start a fully configurable docker based Kafka cluster as part of your tests. 
+Start a fully configurable docker based Kafka cluster as part of your tests by just adding @EmbeddedKafkaCluster to your test class.
 
 ## Build/ Install
 
@@ -126,7 +129,7 @@ From Maven Central as follows:
 <dependency>
   <groupId>io.github.vspiliop.testing</groupId>
   <artifactId>embedded-kafka-cluster</artifactId>
-  <version>0.0.1</version>
+  <version>...</version>
   <scope>test</scope>
 </dependency>
 ```
