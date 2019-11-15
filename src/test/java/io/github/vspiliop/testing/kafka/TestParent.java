@@ -7,38 +7,37 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
+import io.github.vspiliop.testing.kafka.cluster.DockerKafkaClusterFacade;
 import org.apache.kafka.streams.KeyValue;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import io.github.vspiliop.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
 import io.github.vspiliop.schema.test.TestCreated;
 import io.github.vspiliop.schema.test.TestEvents;
 
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
-import io.github.vspiliop.testing.kafka.spring.context.EmbeddedKafkaCluster;
 import io.github.vspiliop.testing.kafka.util.IntegrationTestUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @RunWith(SpringRunner.class)
-@EmbeddedKafkaCluster(topics = {"test.t"})
+@io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster(topics = {"test.t"})
 @ContextConfiguration(classes = {KafkaAdminConfiguration.class})
 @Slf4j
 abstract public class TestParent {
 
 	@Autowired
-	private EmbeddedMultiNodeKafkaCluster embeddedKafkaCluster;
+	private DockerKafkaClusterFacade dockerKafkaClusterFacade;
 	
 	public void sendAnEventAndConsumeIt() throws Exception {
 		sendAnEventAndConsumeIt(0);
 	}
 	
 	protected void sendAnEventAndConsumeIt(int consumerGrouIdPrefix) throws Exception {
-		String brokers = embeddedKafkaCluster.getKafkaBootstapServers();
-		String schemaRegistries = embeddedKafkaCluster.getSchemaRegistryUrls();
+		String brokers = dockerKafkaClusterFacade.getKafkaBootstapServers();
+		String schemaRegistries = dockerKafkaClusterFacade.getSchemaRegistryUrls();
 		
 		log.debug("brokers: {}", brokers);
 		log.debug("schemaRegistries: {}", schemaRegistries);
@@ -66,5 +65,4 @@ abstract public class TestParent {
 		// verify that all messages from previous tests are reconsumed
 		assertThat(eventValues.size()).isEqualTo(consumerGrouIdPrefix + 1);
 	}
-
 }

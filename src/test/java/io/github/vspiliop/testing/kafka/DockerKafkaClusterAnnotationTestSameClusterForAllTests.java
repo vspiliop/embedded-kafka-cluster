@@ -12,7 +12,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
  *
  */
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-public class EmbededKafkaClusterAnnotationTestSameClusterForAllTests extends TestParent {
+public class DockerKafkaClusterAnnotationTestSameClusterForAllTests extends TestParent {
 
 	@Test
 	public void shouldBeAbleToProduceAndConsumeAvroEvents() throws Exception {

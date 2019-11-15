@@ -1,4 +1,4 @@
-package io.github.vspiliop.testing.kafka.junit.rule;
+package io.github.vspiliop.testing.kafka.cluster;
 
 import java.time.Duration;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
-import io.github.vspiliop.testing.kafka.spring.context.EmbeddedKafkaCluster;
+import io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,9 +37,9 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class EmbeddedMultiNodeKafkaCluster extends ExternalResource implements InitializingBean, DisposableBean {
+public class DockerKafkaClusterFacade implements InitializingBean, DisposableBean {
 
-	public static final String BEAN_NAME = "embeddedMultiNodeKafkaCluster";
+	public static final String BEAN_NAME = "dockerMultiNodeKafkaCluster";
 
 	final List<KafkaContainer> brokers;
 
@@ -53,7 +53,7 @@ public class EmbeddedMultiNodeKafkaCluster extends ExternalResource implements I
 	 * Creates and starts the cluster.
 	 */
 	@SuppressWarnings({ "rawtypes" })
-	public EmbeddedMultiNodeKafkaCluster(EmbeddedKafkaCluster embeddedKafka) {
+	public DockerKafkaClusterFacade(DockerKafkaCluster embeddedKafka) {
 		// e.g. zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
 		String externalZookeeperUrl = IntStream.range(1, embeddedKafka.zookeepersCount() + 1)
 			.mapToObj(i -> "zookeeper" + i + ":2181")
@@ -154,22 +154,12 @@ public class EmbeddedMultiNodeKafkaCluster extends ExternalResource implements I
 
 	@Override
 	public void destroy() throws Exception {
-		after();
+    stop();
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		before();
-	}
-
-	@Override
-	protected void before() throws Exception {
-		start();
-	}
-
-	@Override
-	protected void after() {
-		stop();
+    start();
 	}
 
 	public String getKafkaBootstapServers() {
