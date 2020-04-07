@@ -9,18 +9,18 @@ import org.springframework.test.context.ContextCustomizerFactory;
 
 /**
  * The {@link ContextCustomizerFactory} implementation to produce a
- * {@link EmbeddedKafkaContextCustomizer} if a {@link EmbeddedKafkaCluster} annotation
+ * {@link DockerKafkaClusterContextCustomizer} if a {@link DockerKafkaCluster} annotation
  * is present on the test class.
  *
  */
-class EmbeddedKafkaContextCustomizerFactory implements ContextCustomizerFactory {
+class DockerKafkaClusterContextCustomizerFactory implements ContextCustomizerFactory {
 
 	@Override
 	public ContextCustomizer createContextCustomizer(Class<?> testClass,
 			List<ContextConfigurationAttributes> configAttributes) {
-		EmbeddedKafkaCluster EmbeddedKafkaCluster =
-				AnnotatedElementUtils.findMergedAnnotation(testClass, EmbeddedKafkaCluster.class);
-		return EmbeddedKafkaCluster != null ? new EmbeddedKafkaContextCustomizer(EmbeddedKafkaCluster) : null;
+		DockerKafkaCluster DockerKafkaCluster =
+				AnnotatedElementUtils.findMergedAnnotation(testClass, DockerKafkaCluster.class);
+		return DockerKafkaCluster != null ? new DockerKafkaClusterContextCustomizer(DockerKafkaCluster) : null;
 	}
 
 }

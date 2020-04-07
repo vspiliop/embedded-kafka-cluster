@@ -30,7 +30,7 @@ import org.springframework.core.annotation.AliasFor;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-public @interface EmbeddedKafkaCluster {
+public @interface DockerKafkaCluster {
 
 	/**
 	 * @return the number of brokers
