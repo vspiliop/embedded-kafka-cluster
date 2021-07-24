@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 import io.github.vspiliop.testing.kafka.cluster.DockerKafkaClusterFacade;
+import io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster;
 import org.apache.kafka.streams.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -29,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration()
-@io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster(topics = {"test.t"}, brokersCount = 1, zookeepersCount = 1, schemaRegistriesCount = 1)
+@DockerKafkaCluster(topics = {"test.t"}, brokersCount = 1, zookeepersCount = 1, schemaRegistriesCount = 1)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class FeatureSteps {
 

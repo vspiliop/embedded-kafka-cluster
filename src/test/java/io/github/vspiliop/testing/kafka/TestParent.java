@@ -8,6 +8,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 import io.github.vspiliop.testing.kafka.cluster.DockerKafkaClusterFacade;
+import io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster;
 import org.apache.kafka.streams.KeyValue;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import io.github.vspiliop.testing.kafka.util.IntegrationTestUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @RunWith(SpringRunner.class)
-@io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster(topics = {"test.t"})
+@DockerKafkaCluster(topics = {"test.t"})
 @ContextConfiguration(classes = {KafkaAdminConfiguration.class})
 @Slf4j
 abstract public class TestParent {

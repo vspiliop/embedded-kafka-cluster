@@ -1,5 +1,6 @@
 package io.github.vspiliop.testing.kafka;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
@@ -12,6 +13,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
  *
  */
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+@Ignore
 public class DockerKafkaClusterAnnotationTestNewClusterForEachTest extends TestParent {
 
 	@Test
