@@ -15,22 +15,22 @@ import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.Assert;
 
-import io.github.vspiliop.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
+import io.github.vspiliop.testing.kafka.cluster.DockerKafkaClusterFacade;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * The {@link ContextCustomizer} implementation for Spring Integration specific
  * environment.
  * <p>
- * Registers {@link EmbeddedKafkaCluster} bean.
+ * Registers {@link io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster} bean.
  *
  */
 @Slf4j
-class EmbeddedKafkaContextCustomizer implements ContextCustomizer {
+class DockerKafkaClusterContextCustomizer implements ContextCustomizer {
 
-	private final EmbeddedKafkaCluster embeddedKafka;
+	private final io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster embeddedKafka;
 
-	EmbeddedKafkaContextCustomizer(EmbeddedKafkaCluster embeddedKafka) {
+	DockerKafkaClusterContextCustomizer(io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster embeddedKafka) {
 		this.embeddedKafka = embeddedKafka;
 	}
 
@@ -53,21 +53,21 @@ class EmbeddedKafkaContextCustomizer implements ContextCustomizer {
 		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
 		Assert.isInstanceOf(DefaultSingletonBeanRegistry.class, beanFactory);
 
-		EmbeddedMultiNodeKafkaCluster embeddedMultiNodeKafkaCluster = new EmbeddedMultiNodeKafkaCluster(embeddedKafka);
+		DockerKafkaClusterFacade dockerKafkaClusterFacade = new DockerKafkaClusterFacade(embeddedKafka);
 
-		beanFactory.initializeBean(embeddedMultiNodeKafkaCluster, EmbeddedMultiNodeKafkaCluster.BEAN_NAME);
-		beanFactory.registerSingleton(EmbeddedMultiNodeKafkaCluster.BEAN_NAME, embeddedMultiNodeKafkaCluster);
-		((DefaultSingletonBeanRegistry) beanFactory).registerDisposableBean(EmbeddedMultiNodeKafkaCluster.BEAN_NAME,
-				embeddedMultiNodeKafkaCluster);
+		beanFactory.initializeBean(dockerKafkaClusterFacade, DockerKafkaClusterFacade.BEAN_NAME);
+		beanFactory.registerSingleton(DockerKafkaClusterFacade.BEAN_NAME, dockerKafkaClusterFacade);
+		((DefaultSingletonBeanRegistry) beanFactory).registerDisposableBean(DockerKafkaClusterFacade.BEAN_NAME,
+      dockerKafkaClusterFacade);
 		// here the cluster is 100% up and we may reconfigure the application test properties and register topics for creation
     registerTopicsForCreationByKafkaAdmin(beanFactory, context);
-		reconfigureTestContextProperties(context, embeddedMultiNodeKafkaCluster);
+		reconfigureTestContextProperties(context, dockerKafkaClusterFacade);
 	}
 	
-	private void reconfigureTestContextProperties(ConfigurableApplicationContext context, EmbeddedMultiNodeKafkaCluster embeddedMultiNodeKafkaCluster) {
+	private void reconfigureTestContextProperties(ConfigurableApplicationContext context, DockerKafkaClusterFacade dockerKafkaClusterFacade) {
 		TestPropertyValues values = TestPropertyValues.of(
-				embeddedKafka.kafkaServersProperty() + "=" + embeddedMultiNodeKafkaCluster.getKafkaBootstapServers(),
-				embeddedKafka.schemaRegistryServersProperty() + "=" + embeddedMultiNodeKafkaCluster.getSchemaRegistryUrls());
+				embeddedKafka.kafkaServersProperty() + "=" + dockerKafkaClusterFacade.getKafkaBootstapServers(),
+				embeddedKafka.schemaRegistryServersProperty() + "=" + dockerKafkaClusterFacade.getSchemaRegistryUrls());
 		values.applyTo(context);
 	}
 	

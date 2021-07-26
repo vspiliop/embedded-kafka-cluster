@@ -1,4 +1,4 @@
-package io.github.vspiliop.testing.kafka.junit.rule;
+package io.github.vspiliop.testing.kafka.cluster;
 
 import java.time.Duration;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import io.github.vspiliop.testing.kafka.testcontainers.ToxiproxiedKafkaContainer;
 import org.awaitility.Awaitility;
-import org.junit.rules.ExternalResource;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.testcontainers.containers.GenericContainer;
@@ -15,7 +15,7 @@ import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
-import io.github.vspiliop.testing.kafka.spring.context.EmbeddedKafkaCluster;
+import io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -37,96 +37,87 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class EmbeddedMultiNodeKafkaCluster extends ExternalResource implements InitializingBean, DisposableBean {
+public class DockerKafkaClusterFacade implements InitializingBean, DisposableBean {
 
-	public static final String BEAN_NAME = "embeddedMultiNodeKafkaCluster";
+	public static final String BEAN_NAME = "dockerMultiNodeKafkaCluster";
 
-	final List<KafkaContainer> brokers;
+	final List<ToxiproxiedKafkaContainer> brokers;
 
-	@SuppressWarnings("rawtypes")
 	final List<GenericContainer> zookeepers;
 
-	@SuppressWarnings("rawtypes")
 	final List<GenericContainer> schemaRegistries;
 
 	/**
 	 * Creates and starts the cluster.
 	 */
-	@SuppressWarnings({ "rawtypes" })
-	public EmbeddedMultiNodeKafkaCluster(EmbeddedKafkaCluster embeddedKafka) {
+	public DockerKafkaClusterFacade(DockerKafkaCluster dockerKafkaCluster) {
 		// e.g. zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
-		String externalZookeeperUrl = IntStream.range(1, embeddedKafka.zookeepersCount() + 1)
+		String externalZookeeperUrl = IntStream.range(1, dockerKafkaCluster.zookeepersCount() + 1)
 			.mapToObj(i -> "zookeeper" + i + ":2181")
 			.reduce((url1, url2) -> url1 + "," + url2)
 			.get();
 		
 		// e.g. zookeeper1:2888:3888,zookeeper2:2888:3888,zookeeper3:2888:3888
-		String zookeeperServers = IntStream.range(1, embeddedKafka.zookeepersCount() + 1)
+		String zookeeperServers = IntStream.range(1, dockerKafkaCluster.zookeepersCount() + 1)
 				.mapToObj(i -> "zookeeper" + i + ":2888:3888")
 				.reduce((url1, url2) -> url1 + ";" + url2)
 				.get();
 		
 		// e.g. PLAINTEXT://kafka1:9092,PLAINTEXT://kafka2:9092,PLAINTEXT://kafka3:9092
-		String brokerUrl = IntStream.range(1, embeddedKafka.brokersCount() + 1)
+		String brokerUrl = IntStream.range(1, dockerKafkaCluster.brokersCount() + 1)
 				.mapToObj(i -> "PLAINTEXT://kafka" + i + ":9092")
 				.reduce((url1, url2) -> url1 + "," + url2)
 				.get();
 		
 		Network dockerNetwork = Network.newNetwork();
 		
-		brokers = IntStream.range(1, embeddedKafka.brokersCount() + 1)
-				.mapToObj(i -> {
-					return new KafkaContainer(embeddedKafka.platformVersion())
-							.withNetwork(dockerNetwork)
-							.withNetworkAliases("kafka" + i)
-							.withEnv("CONFLUENT_SUPPORT_METRICS_ENABLE", "false")
-							.withEnv("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", embeddedKafka.transactionReplicationFactor() + "")
-							.withEnv("KAFKA_TRANSACTION_STATE_LOG_MIN_ISR", embeddedKafka.minTransactionInSynceReplicas() + "")
-							.withEnv("KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR", embeddedKafka.offsetsReplicationFactor() + "")
-							.withEnv("KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS", "1")
-							.withEnv("KAFKA_MIN_INSYNC_REPLICAS", embeddedKafka.minInSyncReplicas() + "")
-							.withEnv("KAFKA_NUM_PARTITIONS", "1")
-							.withEnv("KAFKA_DEFAULT_REPLICATION_FACTOR", embeddedKafka.defaultReplicationFactor() + "")
-							.withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
-							.withEnv("KAFKA_BROKER_ID", i+"")
-							.withExternalZookeeper(externalZookeeperUrl);
-				})
+		brokers = IntStream.range(1, dockerKafkaCluster.brokersCount() + 1)
+				.mapToObj(i -> new ToxiproxiedKafkaContainer(dockerKafkaCluster.platformVersion())
+            .withNetwork(dockerNetwork)
+            .withNetworkAliases("kafka" + i)
+            .withEnv("CONFLUENT_SUPPORT_METRICS_ENABLE", "false")
+            .withEnv("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", dockerKafkaCluster.transactionReplicationFactor() + "")
+            .withEnv("KAFKA_TRANSACTION_STATE_LOG_MIN_ISR", dockerKafkaCluster.minTransactionInSynceReplicas() + "")
+            .withEnv("KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR", dockerKafkaCluster.offsetsReplicationFactor() + "")
+            .withEnv("KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS", "1")
+            .withEnv("KAFKA_MIN_INSYNC_REPLICAS", dockerKafkaCluster.minInSyncReplicas() + "")
+            .withEnv("KAFKA_NUM_PARTITIONS", "1")
+            .withEnv("KAFKA_DEFAULT_REPLICATION_FACTOR", dockerKafkaCluster.defaultReplicationFactor() + "")
+            .withEnv("KAFKA_AUTO_CREATE_TOPICS_ENABLE", "true")
+            .withEnv("KAFKA_BROKER_ID", i+"")
+            .withExternalZookeeper(externalZookeeperUrl))
+        .map(ToxiproxiedKafkaContainer.class::cast)
 				.collect(Collectors.toList());
 		
-		zookeepers = IntStream.range(1, embeddedKafka.zookeepersCount() + 1)
-				.mapToObj(i -> {
-					return new GenericContainer("confluentinc/cp-zookeeper:" + embeddedKafka.platformVersion())
-							.withNetwork(dockerNetwork)
-							.withNetworkAliases("zookeeper" + i)
-							.withEnv("ZOOKEEPER_CLIENT_PORT", "2181")
-							.withEnv("ZOOKEEPER_SERVER_ID", i + "")
-							.withEnv("ZOOKEEPER_SERVERS", zookeeperServers)
-							.withEnv("ZOOKEEPER_TICK_TIME", "2000")
-							.withEnv("ZOOKEEPER_INIT_LIMIT", "5")
-							.withEnv("ZOOKEEPER_SYNC_LIMIT", "2");
-				})
+		zookeepers = IntStream.range(1, dockerKafkaCluster.zookeepersCount() + 1)
+				.mapToObj(i -> new GenericContainer("confluentinc/cp-zookeeper:" + dockerKafkaCluster.platformVersion())
+            .withNetwork(dockerNetwork)
+            .withNetworkAliases("zookeeper" + i)
+            .withEnv("ZOOKEEPER_CLIENT_PORT", "2181")
+            .withEnv("ZOOKEEPER_SERVER_ID", i + "")
+            .withEnv("ZOOKEEPER_SERVERS", zookeeperServers)
+            .withEnv("ZOOKEEPER_TICK_TIME", "2000")
+            .withEnv("ZOOKEEPER_INIT_LIMIT", "5")
+            .withEnv("ZOOKEEPER_SYNC_LIMIT", "2"))
 				.collect(Collectors.toList());
 		
-		schemaRegistries = IntStream.range(1, embeddedKafka.schemaRegistriesCount() + 1)
-				.mapToObj(i -> {
-					return new GenericContainer("confluentinc/cp-schema-registry:" + embeddedKafka.platformVersion())
-							.withNetwork(dockerNetwork)
-							.withNetworkAliases("schema-registry" + i)
-							.withEnv("SCHEMA_REGISTRY_HOST_NAME", "schema-registry" + i)
-							.withEnv("SCHEMA_REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR", embeddedKafka.schemaRegistryReplicationFactor() + "")
-							.withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", brokerUrl)
-							.withEnv("SCHEMA_REGISTRY_DEBUG", log.isTraceEnabled()? "true" : "false")
-							.withEnv("SCHEMA_REGISTRY_MASTER_ELIGIBILITY", "true")
-							.withStartupTimeout(Duration.ofMinutes(2)).withExposedPorts(8081);
-				})
+		schemaRegistries = IntStream.range(1, dockerKafkaCluster.schemaRegistriesCount() + 1)
+				.mapToObj(i -> new GenericContainer("confluentinc/cp-schema-registry:" + dockerKafkaCluster.platformVersion())
+            .withNetwork(dockerNetwork)
+            .withNetworkAliases("schema-registry" + i)
+            .withEnv("SCHEMA_REGISTRY_HOST_NAME", "schema-registry" + i)
+            .withEnv("SCHEMA_REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR", dockerKafkaCluster.schemaRegistryReplicationFactor() + "")
+            .withEnv("SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS", brokerUrl)
+            .withEnv("SCHEMA_REGISTRY_DEBUG", log.isTraceEnabled()? "true" : "false")
+            .withEnv("SCHEMA_REGISTRY_MASTER_ELIGIBILITY", "true")
+            .withStartupTimeout(Duration.ofMinutes(2)).withExposedPorts(8081))
 				.collect(Collectors.toList());
 	}
 
 	/**
 	 * Creates and starts the cluster.
 	 */
-	@SuppressWarnings("unchecked")
-	public void start() throws Exception {
+	public void start() {
 		log.info("Starting Kafka cluster..");
 		Slf4jLogConsumer logConsumer = new Slf4jLogConsumer(log);
 		zookeepers.stream().parallel().filter(service -> !service.isRunning()).forEach(GenericContainer::start);
@@ -153,23 +144,13 @@ public class EmbeddedMultiNodeKafkaCluster extends ExternalResource implements I
 	}
 
 	@Override
-	public void destroy() throws Exception {
-		after();
+	public void destroy() {
+    stop();
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
-		before();
-	}
-
-	@Override
-	protected void before() throws Exception {
-		start();
-	}
-
-	@Override
-	protected void after() {
-		stop();
+	public void afterPropertiesSet() {
+    start();
 	}
 
 	public String getKafkaBootstapServers() {

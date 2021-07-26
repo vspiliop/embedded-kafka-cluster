@@ -3,7 +3,7 @@
 
 # embedded-kafka-cluster
 
-Start a fully configurable docker based Kafka cluster as part of your tests by just adding @EmbeddedKafkaCluster to your test class.
+Start a fully configurable docker based Kafka cluster as part of your tests by just adding @DockerKafkaCluster to your test class.
 
 ## Build/ Install
 
@@ -33,14 +33,14 @@ followed by
 mvn release:perform
 ```
 
-## @EmbeddedKafkaCluster
+## @DockerKafkaCluster
 
 ### Features
 
  * Start a docker based Kafka cluster that includes one or more Kafka brokers, Zookeepers and Confluent Schema Registries.
  * Parameterize the cluster (see Parameters section).
  * The cluster starts before the test spring context.
- * Reconfigure your spring test context to point to the embedded Kafka cluster (e.g point to the proper IPs and ports).
+ * Reconfigure your spring test context to point to the docker Kafka cluster (e.g point to the proper IPs and ports).
  * Run more than one unit test or Cucumber feature scenario in parallel and reduce the total execution time.
 
 ### Parameters
@@ -51,8 +51,8 @@ mvn release:perform
 | brokersCount or value | # of brokers of the cluster | brokersCount = 3 | 1 |
 | zookeepersCount | # of ZKs of the cluster | zookeepersCount = 3 | 1 |
 | schemaRegistriesCount | # of Confluent Schema Registries of the cluster | schemaRegistriesCount = 3 | 1 |
-| kafkaServersProperty | The spring test context property to reconfigure, so that it points to the embedded Kafka broker  | kafkaServersProperty = "my.broker.url" | config.kafka.bootstrap |
-| schemaRegistryServersProperty | The spring test context property to reconfigure, so that it points to the embedded Schema Registry | schemaRegistryServersProperty = "my.registry.url" | config.kafka.registry |
+| kafkaServersProperty | The spring test context property to reconfigure, so that it points to the docker Kafka broker  | kafkaServersProperty = "my.broker.url" | config.kafka.bootstrap |
+| schemaRegistryServersProperty | The spring test context property to reconfigure, so that it points to the docker Schema Registry | schemaRegistryServersProperty = "my.registry.url" | config.kafka.registry |
 | platformVersion | Confluent platform version | 4.1.2 | 4.1.2 |
 | minInSyncReplicas | Minimum in sync replicas for all topics, apart from transaction internal ones. | 1 | 1 |
 | minTransactionInSynceReplicas |  Minimum in sync replicas for transaction internal topics.  | 1 | 1 |
@@ -69,12 +69,12 @@ The typical usage of this annotation is like (see also tests):
 
 ```
  @RunWith(SpringRunner.class)
- @EmbeddedKafkaCluster(topics = {"test.t"})
+ @DockerKafkaCluster(topics = {"test.t"})
  public class MyKafkaTests {
     
     // optionally autowire if needed
     @Autowired
-    private EmbeddedMultiNodeKafkaCluster embeddedMultiNodeKafkaCluster;
+    private DockerKafkaClusterFacade dockerKafkaClusterFacade;
 
  }
 ```
@@ -82,7 +82,7 @@ The typical usage of this annotation is like (see also tests):
 Control the number of services that form the cluster (see also tests):
 
 ```
-@EmbeddedKafkaCluster(topics = {"test.t"}, brokersCount = 1, zookeepersCount = 1, schemaRegistriesCount = 1)
+@DockerKafkaCluster(topics = {"test.t"}, brokersCount = 1, zookeepersCount = 1, schemaRegistriesCount = 1)
 ```
 
 Always use "topics" parameter to pre-create all topics that you use, as it speeds up the consumption of events!
@@ -128,7 +128,7 @@ From Maven Central as follows:
 ```
 <dependency>
   <groupId>io.github.vspiliop.testing</groupId>
-  <artifactId>embedded-kafka-cluster</artifactId>
+  <artifactId>docker-kafka-cluster</artifactId>
   <version>...</version>
   <scope>test</scope>
 </dependency>

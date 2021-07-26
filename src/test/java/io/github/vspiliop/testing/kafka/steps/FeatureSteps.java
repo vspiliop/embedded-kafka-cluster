@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
+import io.github.vspiliop.testing.kafka.cluster.DockerKafkaClusterFacade;
+import io.github.vspiliop.testing.kafka.spring.context.DockerKafkaCluster;
 import org.apache.kafka.streams.KeyValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -23,19 +25,17 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.When;
 import io.confluent.kafka.serializers.KafkaAvroDeserializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
-import io.github.vspiliop.testing.kafka.junit.rule.EmbeddedMultiNodeKafkaCluster;
-import io.github.vspiliop.testing.kafka.spring.context.EmbeddedKafkaCluster;
 import io.github.vspiliop.testing.kafka.util.IntegrationTestUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration()
-@EmbeddedKafkaCluster(topics = {"test.t"}, brokersCount = 1, zookeepersCount = 1, schemaRegistriesCount = 1)
+@DockerKafkaCluster(topics = {"test.t"}, brokersCount = 1, zookeepersCount = 1, schemaRegistriesCount = 1)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
 public class FeatureSteps {
 
 	@Autowired
-	private EmbeddedMultiNodeKafkaCluster embeddedKafkaCluster;
+	private DockerKafkaClusterFacade embeddedKafkaCluster;
 	
 	String brokers;
 	
